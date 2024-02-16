@@ -184,88 +184,88 @@ if openai_key and selected_dataset and selected_method and st.button("Generate S
     else:
         st.write(str(summary))
 
-    # Step 4 - Generate goals
-    if summary and st.button("Generate Goals"):
-        st.sidebar.write("### Goal Selection")
+# Step 4 - Generate goals
+if summary and st.button("Generate Goals"):
+    st.sidebar.write("### Goal Selection")
 
-        num_goals = st.sidebar.slider(
-            "Number of goals to generate",
-            min_value=1,
-            max_value=10,
-            value=4)
-        own_goal = st.sidebar.checkbox("Add Your Own Goal")
+    num_goals = st.sidebar.slider(
+        "Number of goals to generate",
+        min_value=1,
+        max_value=10,
+        value=4)
+    own_goal = st.sidebar.checkbox("Add Your Own Goal")
 
-        # **** lida.goals *****
-        goals = lida.goals(summary, n=num_goals, textgen_config=textgen_config)
-        st.write(f"## Goals ({len(goals)})")
+    # **** lida.goals *****
+    goals = lida.goals(summary, n=num_goals, textgen_config=textgen_config)
+    st.write(f"## Goals ({len(goals)})")
 
-        default_goal = goals[0].question
-        goal_questions = [goal.question for goal in goals]
+    default_goal = goals[0].question
+    goal_questions = [goal.question for goal in goals]
 
-        if own_goal:
-            user_goal = st.sidebar.text_input("Describe Your Goal")
+    if own_goal:
+        user_goal = st.sidebar.text_input("Describe Your Goal")
 
-            if user_goal:
+        if user_goal:
 
-                new_goal = Goal(question=user_goal, visualization=user_goal, rationale="")
-                goals.append(new_goal)
-                goal_questions.append(new_goal.question)
+            new_goal = Goal(question=user_goal, visualization=user_goal, rationale="")
+            goals.append(new_goal)
+            goal_questions.append(new_goal.question)
 
-        selected_goal = st.selectbox('Choose a generated goal', options=goal_questions, index=0)
+    selected_goal = st.selectbox('Choose a generated goal', options=goal_questions, index=0)
 
-        # st.markdown("### Selected Goal")
-        selected_goal_index = goal_questions.index(selected_goal)
-        st.write(goals[selected_goal_index])
+    # st.markdown("### Selected Goal")
+    selected_goal_index = goal_questions.index(selected_goal)
+    st.write(goals[selected_goal_index])
 
-        selected_goal_object = goals[selected_goal_index]
+    selected_goal_object = goals[selected_goal_index]
 
-        # Step 5 - Generate visualizations
-        if selected_goal_object and st.button("Generate Visualizations"):
-            st.sidebar.write("## Visualization Library")
-            visualization_libraries = ["seaborn", "matplotlib", "plotly"]
+# Step 5 - Generate visualizations
+if selected_goal_object and st.button("Generate Visualizations"):
+    st.sidebar.write("## Visualization Library")
+    visualization_libraries = ["seaborn", "matplotlib", "plotly"]
 
-            selected_library = st.sidebar.selectbox(
-                'Choose a visualization library',
-                options=visualization_libraries,
-                index=0
-            )
+    selected_library = st.sidebar.selectbox(
+        'Choose a visualization library',
+        options=visualization_libraries,
+        index=0
+    )
 
-            # Update the visualization generation call to use the selected library.
-            st.write("## Visualizations")
+    # Update the visualization generation call to use the selected library.
+    st.write("## Visualizations")
 
-            # slider for number of visualizations
-            num_visualizations = st.sidebar.slider(
-                "Number of visualizations to generate",
-                min_value=1,
-                max_value=10,
-                value=2)
+    # slider for number of visualizations
+    num_visualizations = st.sidebar.slider(
+        "Number of visualizations to generate",
+        min_value=1,
+        max_value=10,
+        value=2)
 
-            textgen_config = TextGenerationConfig(
-                n=num_visualizations, temperature=temperature,
-                model=selected_model,
-                use_cache=use_cache)
+    textgen_config = TextGenerationConfig(
+        n=num_visualizations, temperature=temperature,
+        model=selected_model,
+        use_cache=use_cache)
 
-            # **** lida.visualize *****
-            visualizations = lida.visualize(
-                summary=summary,
-                goal=selected_goal_object,
-                textgen_config=textgen_config,
-                library=selected_library)
+    # **** lida.visualize *****
+    visualizations = lida.visualize(
+        summary=summary,
+        goal=selected_goal_object,
+        textgen_config=textgen_config,
+        library=selected_library)
 
-            viz_titles = [f'Visualization {i+1}' for i in range(len(visualizations))]
+    viz_titles = [f'Visualization {i+1}' for i in range(len(visualizations))]
 
-            selected_viz_title = st.selectbox('Choose a visualization', options=viz_titles, index=0)
+    selected_viz_title = st.selectbox('Choose a visualization', options=viz_titles, index=0)
 
-            selected_viz = visualizations[viz_titles.index(selected_viz_title)]
+    selected_viz = visualizations[viz_titles.index(selected_viz_title)]
 
-            if selected_viz.raster:
-                from PIL import Image
-                import io
-                import base64
+    if selected_viz.raster:
+        from PIL import Image
+        import io
+        import base64
 
-                imgdata = base64.b64decode(selected_viz.raster)
-                img = Image.open(io.BytesIO(imgdata))
-                st.image(img, caption=selected_viz_title, use_column_width=True)
+        imgdata = base64.b64decode(selected_viz.raster)
+        img = Image.open(io.BytesIO(imgdata))
+        st.image(img, caption=selected_viz_title, use_column_width=True)
 
-            st.write("### Visualization Code")
-            st.code(selected_viz.code)
+    st.write("### Visualization Code")
+    st.code(selected_viz.code)
