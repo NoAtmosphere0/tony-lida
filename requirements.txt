@@ -1,9 +1,9 @@
-vanna
+lida
 streamlit
-transformers[torch]
 datasets
 numpy
 pandas
 matplotlib
 seaborn
 pytest
+openai
