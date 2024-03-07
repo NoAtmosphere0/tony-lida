@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-data = pd.read_csv("titanic.csv")
+data = pd.read_csv("datasets/titanic.csv")
 
 
 def explore_column(data, col):
