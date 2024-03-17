@@ -1,17 +1,7 @@
 from lida import Manager, TextGenerationConfig, llm
-from lida.datamodel import Goal
 import os
-import pandas as pd
-import numpy as np
-import json
-import logging
-import pytest
-from prep_guide import GuideExplorer
-from lida.utils import clean_code_snippet, read_dataframe
-from lida.components import summarizer
+from utils.prep_guide import GuideExplorer
 
-import rich
-from rich.console import Console
 from rich.traceback import install
 
 install()
