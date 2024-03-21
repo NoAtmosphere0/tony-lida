@@ -1,4 +1,3 @@
-# demo streamlit file
 import streamlit as st
 import pandas as pd
 
@@ -29,8 +28,6 @@ openai_key, temperature, use_cache, selected_dataset, selected_model, selected_m
 )
 
 st.write("## Data Explorer")
-
-st.write(selected_dataset)
 
 if selected_dataset is not None:
     data = pd.read_csv(str(selected_dataset))   
