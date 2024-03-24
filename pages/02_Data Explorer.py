@@ -27,7 +27,6 @@ openai_key, temperature, use_cache, selected_dataset, selected_model, selected_m
     selected_method
 )
 
-st.write("## Data Explorer")
 
 if selected_dataset is not None:
     data = pd.read_csv(str(selected_dataset))   

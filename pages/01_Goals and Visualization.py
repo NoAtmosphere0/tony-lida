@@ -10,6 +10,7 @@ st.set_page_config(
     page_icon="📊",
 )
 
+st.title("Goals and Visualization")
 
 openai_key = None
 selected_dataset = None

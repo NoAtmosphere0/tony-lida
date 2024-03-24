@@ -98,10 +98,10 @@ def display(description: dict, type: str, layout: list):
             with col2:
                 st.text(
                     """
-                        Valid
-                        Missing
-                        Unique
-                        Most Common
+                        Valid ✅
+                        Missing ❌
+                        Unique 🆔
+                        Most Common 
                         """
                 )
             with col3:
