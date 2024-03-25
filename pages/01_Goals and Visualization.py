@@ -78,7 +78,7 @@ def goals_visualizations(openai_key, selected_dataset, selected_method, temperat
                 "Number of goals to generate",
                 min_value=1,
                 max_value=10,
-                value=3)
+                value=4)
             own_goal = st.sidebar.checkbox("Add Your Own Goal")
 
             # **** lida.goals *****
@@ -113,7 +113,7 @@ def goals_visualizations(openai_key, selected_dataset, selected_method, temperat
                 selected_library = st.sidebar.selectbox(
                     'Choose a visualization library',
                     options=visualization_libraries,
-                    index=1
+                    index=0
                 )
 
                 # Update the visualization generation call to use the selected library.
@@ -131,108 +131,31 @@ def goals_visualizations(openai_key, selected_dataset, selected_method, temperat
                     model=selected_model,
                     use_cache=use_cache)
                 
-                # viz_button = st.button("Generate Visualizations")
-                # if viz_button:
-                # **** lida.visualize *****
-                visualizations = lida.visualize(
-                    summary=summary,
-                    goal=selected_goal_object,
-                    textgen_config=textgen_config,
-                    library=selected_library)
+                viz_button = st.button("Generate Visualizations")
+                if viz_button:
+                    # **** lida.visualize *****
+                    visualizations = lida.visualize(
+                        summary=summary,
+                        goal=selected_goal_object,
+                        textgen_config=textgen_config,
+                        library=selected_library)
 
-                viz_titles = [f'Visualization {i+1}' for i in range(len(visualizations))]
+                    viz_titles = [f'Visualization {i+1}' for i in range(len(visualizations))]
 
-                selected_viz_title = st.selectbox('Choose a visualization', options=viz_titles, index=0)
+                    selected_viz_title = st.selectbox('Choose a visualization', options=viz_titles, index=0)
 
-                selected_viz = visualizations[viz_titles.index(selected_viz_title)]
+                    selected_viz = visualizations[viz_titles.index(selected_viz_title)]
 
-                if selected_viz.raster:
-                    from PIL import Image
-                    import io
-                    import base64
+                    if selected_viz.raster:
+                        from PIL import Image
+                        import io
+                        import base64
 
-                    imgdata = base64.b64decode(selected_viz.raster)
-                    img = Image.open(io.BytesIO(imgdata))
-                    st.image(img, caption=selected_viz_title, use_column_width=True)
+                        imgdata = base64.b64decode(selected_viz.raster)
+                        img = Image.open(io.BytesIO(imgdata))
+                        st.image(img, caption=selected_viz_title, use_column_width=True)
 
-                with st.expander("Show Visualization Code"):
                     st.write("### Visualization Code")
                     st.code(selected_viz.code)
-
-                if visualizations and len(visualizations) > 0:
-                    viz_edit_tab, viz_explain_tab, viz_eval_tab, viz_rec_tab = st.tabs(
-                        ["Edit", "Explain", "Evaluate", "Recommend"]
-                    )
-
-                    with viz_edit_tab:
-                        instructions = st.text_input("Give instructions on how to edit the viz")
-                        edited_viz = lida.edit(
-                            code=selected_viz.code, 
-                            instructions=instructions, 
-                            summary=summary,
-                            library=selected_library,
-                            textgen_config=textgen_config
-                        )
-                        
-                        edited_viz = edited_viz[0]
-
-                        if edited_viz.raster:
-                            edit_imgdata = base64.b64decode(edited_viz.raster)
-                            edit_img = Image.open(io.BytesIO(edit_imgdata))
-                            st.image(edit_img, caption="Edited Visualization", use_column_width=True)
-
-
-                            with st.expander("Show Edited Visualization Code"):
-                                st.write("### Edited Visualization Code")
-                                st.code(edited_viz.code)
-
-    
-
-                    with viz_explain_tab:
-                        explanation = lida.explain(
-                            code=selected_viz.code,
-                        )
-                        explanation = explanation[0]
-
-                        for section in explanation:
-                            section_name = section["section"]
-                            section_explanation = section["explanation"]
-
-                            st.write(f"### {section_name}")
-                            st.write(section_explanation)
-
-                        
-
-                    with viz_eval_tab:
-                        evaluation = lida.evaluate(
-                            code=selected_viz.code,
-                            goal=selected_goal_object,
-                            library=selected_library
-                        )
-
-                        evaluation = evaluation[0]
-
-                        for dimension in evaluation:
-                            dimension_name = dimension["dimension"]
-                            dimension_score = dimension["score"]
-                            dimension_rationale = dimension["rationale"]
-
-                            st.write(f"### {dimension_name}, Score: **{dimension_score}**")
-                            st.write(dimension_rationale)
-
-
-                    with viz_rec_tab:
-                        recommendations = lida.recommend(
-                            code = selected_viz.code,
-                            summary=summary,
-                            n = 2, 
-                            textgen_config=textgen_config
-                        )
-
-                        for recommendation in recommendations:
-                            st.write(recommendation)
-
-
-                        
 
 goals_visualizations(openai_key, selected_dataset, selected_method, temperature, selected_model, use_cache)
