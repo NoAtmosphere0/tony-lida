@@ -65,8 +65,7 @@ def side_bar(openai_key= None, temperature=0.0, use_cache=True, selected_dataset
         datasets = [
             {"label": "Select a dataset", "url": None},
             {"label": "Covid", "url": "./datasets/covid_data.csv"},
-            {"label": "Titanic", "url": "./datasets/titanic.csv"},
-            {"label": "Space Titanic", "url": "./datasets/space_titanic.csv"}
+            {"label": "Titanic", "url": "./datasets/titanic.csv"}
         ]
 
         selected_dataset_label = st.sidebar.selectbox(
