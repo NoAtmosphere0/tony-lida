@@ -28,7 +28,7 @@ openai_key, temperature, use_cache, selected_dataset, selected_model, selected_m
     selected_method
 )
 
-st.write("## Data Preprocessing Guide")
+
 
 if openai_key and selected_dataset and selected_method:
     lida = Manager(text_gen=llm("openai", api_key=openai_key))
