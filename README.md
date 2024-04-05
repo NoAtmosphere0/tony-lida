@@ -2,23 +2,23 @@
 A web-based implementation of [LIDA](https://github.com/microsoft/lida) - a library for generating data visualizations and data-faithful infographics; with more functionalities and a user-friendly interface.
 
 ## App structure
-.
-├── datasets/
-│   ├── covid_data.csv
-│   └── titanic.csv
-├── pages/
-│   ├── 01_Goals and Visualization.py
-│   ├── 02_Data Explorer.py
-│   └── 03_Data Prep.pys
-├── utils/s
-│   ├── data_explorer.py
-│   ├── prep_guide.py
-│   └── side_bar.py
-├── .gitignore
-├── Home.py
-├── LICENSE
-├── README.md
-└── requirements.txts
+.  
+├── datasets/  
+│   ├── covid_data.csv  
+│   └── titanic.csv  
+├── pages/  
+│   ├── 01_Goals and Visualization.py  
+│   ├── 02_Data Explorer.py  
+│   └── 03_Data Prep.py  
+├── utils/    
+│   ├── data_explorer.py  
+│   ├── prep_guide.py  
+│   └── side_bar.py  
+├── .gitignore  
+├── Home.py  
+├── LICENSE  
+├── README.md  
+└── requirements.txt
 
 ## Features of this implementation
 - Generate goal-oriented data visualizations
